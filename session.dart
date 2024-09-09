@@ -21,6 +21,7 @@ class Session {
   Session.random() {
     var random = Random();
     _number = [];
+    _log = Map();
     while (_number.length < 4) {
       var value = random.nextInt(10);
 
