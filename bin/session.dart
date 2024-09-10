@@ -7,7 +7,7 @@ class Session {
   Session(List<int> number) {
     _number = [];
     var i = 0;
-    _log = Map();
+    _log = {};
     while (_number.length < 4) {
       var value = number[i];
       i += 1;
@@ -21,7 +21,7 @@ class Session {
   Session.random() {
     var random = Random();
     _number = [];
-    _log = Map();
+    _log = {};
     while (_number.length < 4) {
       var value = random.nextInt(10);
 

@@ -4,16 +4,16 @@ import "session.dart";
 
 class IoManager {
   int? _numberInput() {
-    var input_s = stdin.readLineSync() ?? "";
-    var input = int.tryParse(input_s);
+    var inputS = stdin.readLineSync() ?? "";
+    var input = int.tryParse(inputS);
     return input;
   }
 
   List<int>? _numberListInput() {
     List<int> input = [];
-    var input_s = stdin.readLineSync() ?? "";
-    var input_s_l = input_s.split("");
-    for (var str in input_s_l) {
+    var inputS = stdin.readLineSync() ?? "";
+    var inputSL = inputS.split("");
+    for (var str in inputSL) {
       var n = int.tryParse(str);
       if (n != null) {
         input.add(n);
@@ -32,11 +32,11 @@ class IoManager {
     stdout.write("""-----------------------
 숫자야구 게임 by g9in128
 
-1. 혼자 플레이하기 - Single Play
-2. 둘이서 플레이하기 - 2P Play
-3. 기록 보기 - View the Records
-4. 로그인 하기 - Login
-5. 종료 하기 - Quit
+1. 혼자 플레이하기
+2. 둘이서 플레이하기
+3. 기록 보기
+4. 로그인 하기
+5. 종료 하기
 -----------------------
 >""");
     menu = _numberInput() ?? -1;
@@ -64,23 +64,23 @@ class IoManager {
         cancel = false;
       }
       print("질문을 입력하세요!");
-      if (!question.isEmpty) {
+      if (question.isNotEmpty) {
         print("현재 입력값 : ${question.join(" ")}");
       }
       stdout.write(">");
 
-      var tmp_list = _numberListInput();
-      Set<int> check_multi = {};
-      for (var i in tmp_list ?? List<int>.empty()) {
-        check_multi.add(i);
+      var tmpList = _numberListInput();
+      Set<int> checkMulti = {};
+      for (var i in tmpList ?? List<int>.empty()) {
+        checkMulti.add(i);
       }
-      if (tmp_list == null || check_multi.length != tmp_list.length) {
+      if (tmpList == null || checkMulti.length != tmpList.length) {
         capa = 0;
         question.clear();
         cancel = true;
       } else {
-        capa += tmp_list.length;
-        question.addAll(tmp_list);
+        capa += tmpList.length;
+        question.addAll(tmpList);
       }
     }
     return question;
