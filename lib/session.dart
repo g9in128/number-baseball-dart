@@ -3,8 +3,9 @@ import 'dart:math';
 class Session {
   late List<int> _number;
   late Map<int, Result> _log;
+  String? _player;
 
-  Session(List<int> number) {
+  Session(List<int> number, [String? player]) {
     _number = [];
     var i = 0;
     _log = {};
@@ -16,9 +17,10 @@ class Session {
         _number.add(value);
       }
     }
+    _player = player;
   }
 
-  Session.random() {
+  Session.random([String? player]) {
     var random = Random();
     _number = [];
     _log = {};
@@ -29,6 +31,7 @@ class Session {
         _number.add(value);
       }
     }
+    _player = player;
   }
 
   Result compare(List<int> question) {
@@ -50,6 +53,8 @@ class Session {
   }
 
   Map<int, Result> get log => _log;
+
+  String? get player => _player;
 }
 
 class Result {

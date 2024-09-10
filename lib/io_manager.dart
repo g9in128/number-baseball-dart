@@ -9,10 +9,38 @@ class IoManager {
     return input;
   }
 
-  List<int>? _numberListInput() {
+  List<int>? _numberListInput([bool passwd = false]) {
     List<int> input = [];
-    var inputS = stdin.readLineSync() ?? "";
-    var inputSL = inputS.split("");
+    late List<String> inputSL;
+    if (passwd) {
+      inputSL = [];
+
+      stdin.echoMode = false;
+      stdin.lineMode = false;
+
+      var test = <int>[];
+      while (true) {
+        var char = stdin.readByteSync();
+        test.add(char);
+        if (char == 10 || char == 13) {
+          break;
+        }
+        if (char == 8 || char == 127) {
+          inputSL.removeLast();
+          stdout.write("\b \b");
+        } else {
+          inputSL.add(String.fromCharCode(char));
+          stdout.write("*");
+        }
+      }
+      print("");
+      print(test);
+      stdin.lineMode = true;
+      stdin.echoMode = true;
+    } else {
+      var inputS = stdin.readLineSync() ?? "";
+      inputSL = inputS.split("");
+    }
     for (var str in inputSL) {
       var n = int.tryParse(str);
       if (n != null) {
@@ -34,9 +62,7 @@ class IoManager {
 
 1. 혼자 플레이하기
 2. 둘이서 플레이하기
-3. 기록 보기
-4. 로그인 하기
-5. 종료 하기
+3. 종료 하기
 -----------------------
 >""");
     menu = _numberInput() ?? -1;
@@ -48,7 +74,12 @@ class IoManager {
     var capa = 0;
     var cancel = false;
     while (capa < 4) {
-      print("\n\x1B[2J\x1B[0;0H=========================\n질문 현황");
+      var name = session.player;
+      if (name != null) {
+        name += "의";
+      }
+      print(
+          "\n\n\x1B[2J\x1B[0;0H=========================\n${name ?? ''}질문 현황");
       var log = session.log;
       if (log.isEmpty) print("N/A");
       for (var i = 0; i < log.length; i++) {
@@ -84,5 +115,23 @@ class IoManager {
       }
     }
     return question;
+  }
+
+  Session makePlayerView(String defaultName) {
+    stdout.write(
+        "\x1B[2J\x1B[0;0H$defaultName의 이름을 설정하세요(기본값 : $defaultName)\n>");
+    var name = stdin.readLineSync() ?? defaultName;
+    if (name.isEmpty) name = defaultName;
+    var answer = <int>[];
+    var cancel = false;
+    while (answer.length != 4) {
+      if (cancel) print("\x1B[2J\x1B잘못된 값을 입력하였습니다!");
+      print("생각한 0부터 9까지 숫자 4개를 입력하세요.");
+      stdout.write("숫자 : ");
+      answer = _numberListInput(true) ?? <int>[];
+      cancel = true;
+    }
+    Session session = Session(answer, name);
+    return session;
   }
 }
